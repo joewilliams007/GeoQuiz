@@ -15,7 +15,7 @@ Tested and developed on Samsung watch5.
 ## PlayStore
 [PlayStore](https://play.google.com/store/apps/details?id=com.dev.geoquizworld)
 
-Note: The newest version will always be on Github first.
+Note: The newest version will always be on GitHub first.
 
 ## Features
 
