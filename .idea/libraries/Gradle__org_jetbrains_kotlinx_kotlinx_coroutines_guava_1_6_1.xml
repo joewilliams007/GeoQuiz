@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Gradle: org.jetbrains.kotlinx:kotlinx-coroutines-guava:1.6.1">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlinx/kotlinx-coroutines-guava/1.6.1/f64a99e16f773ba8bb2a94eb94f182ed67631ff2/kotlinx-coroutines-guava-1.6.1.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlinx/kotlinx-coroutines-guava/1.6.1/847469e20fe6c116cad730b2e27df41537d00b65/kotlinx-coroutines-guava-1.6.1-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlinx/kotlinx-coroutines-guava/1.6.1/691dfca80c6f27eedf7e411b8d1237eb07ac10a7/kotlinx-coroutines-guava-1.6.1-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

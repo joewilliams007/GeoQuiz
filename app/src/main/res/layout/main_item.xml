@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/menu_container"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+
+    <TextView
+        android:id="@+id/menu_item"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Menu Item"
+        android:padding="4dp"
+        android:layout_margin="4dp"
+        android:layout_marginLeft="4dp"
+        android:layout_marginRight="4dp"
+        android:gravity="center"
+        android:background="@drawable/rounded_corner"
+        android:textColor="?attr/colorOnPrimary"
+        tools:ignore="HardcodedText" />
+
+</RelativeLayout>

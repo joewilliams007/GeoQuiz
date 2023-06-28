@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Gradle: com.kcthota:emoji4j:6.0">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.kcthota/emoji4j/6.0/e25794e79fb972ca7708da151dd943886a27b5da/emoji4j-6.0.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.kcthota/emoji4j/6.0/bd8d0369add2272a542b930890107d8027b30a80/emoji4j-6.0-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.kcthota/emoji4j/6.0/941c9544bd85f46476569e8f86932bf952364f54/emoji4j-6.0-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

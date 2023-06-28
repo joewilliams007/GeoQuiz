@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Gradle: com.vanniktech:emoji-jvm:0.16.0">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.vanniktech/emoji-jvm/0.16.0/95bba0b20b085921f68c656844a3e9f59305d747/emoji-jvm-0.16.0.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.vanniktech/emoji-jvm/0.16.0/47405025aa5423da5e090c4620f1f412bf34904c/emoji-jvm-0.16.0-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.vanniktech/emoji-jvm/0.16.0/a62632901f93d77de7b5751075bb0f9aa252b2c8/emoji-jvm-0.16.0-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
