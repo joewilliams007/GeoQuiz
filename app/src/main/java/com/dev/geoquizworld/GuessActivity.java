@@ -51,6 +51,7 @@ public class GuessActivity extends Activity {
         setContentView(R.layout.activity_guess);
         wearableRecyclerView = findViewById(R.id.main_menu_view);
         intent = getIntent();
+        toast(intent.getStringExtra("type"));
         getFlag();
     }
 
@@ -61,7 +62,7 @@ public class GuessActivity extends Activity {
         ArrayList<MainItem> menuItems = new ArrayList<>();
         int randomNum = ThreadLocalRandom.current().nextInt(0, 3 + 1);
 
-        menuItems.add(new MainItem("flag",items.get(randomNum).emoji,false));
+        menuItems.add(new MainItem("flag",items.get(randomNum).emoji,false,null));
 
         int i = 0;
         for (Country country : items){
@@ -71,24 +72,28 @@ public class GuessActivity extends Activity {
                 correctCountryName = country.getName();
                 correctCountryEmoji = country.getEmoji();
             }
-            menuItems.add(new MainItem("guess",country.name,isCorrect));
+            menuItems.add(new MainItem("guess",country.name,isCorrect,country.emoji));
             i++;
         }
         // menuItems.add(new MainItem("skip","skip",false));
-
+        menuItems.add(new MainItem("settings","",false,null));
         build(menuItems);
     }
     Boolean isSolution = false;
-    public void createFeedSolution(Boolean correct){
+    public void createFeedSolution(Boolean correct, String emoji){
         ArrayList<MainItem> menuItems = new ArrayList<>();
 
         isSolution = true;
 
-        menuItems.add(new MainItem("smallFlag",correctCountryEmoji,false));
+        if (correctCountryEmoji.equals(emoji)) { // in case there are multiple correct answers using same flag
+            correct = true;
+        }
+
+        menuItems.add(new MainItem("smallFlag",correctCountryEmoji,false,null));
         if (!correct) {
-            menuItems.add(new MainItem("settings","wrong. correct name is\n"+correctCountryName,false));
+            menuItems.add(new MainItem("settings","wrong. correct name is\n"+correctCountryName,false,null));
         } else {
-            menuItems.add(new MainItem("settings","correct! it is\n"+correctCountryName+"\n\nscore: "+(Account.score()+1),false));
+            menuItems.add(new MainItem("settings","correct! it is\n"+correctCountryName+"\n\nscore: "+(Account.score()+1),false,null));
         }
         Account.upGuesses();
 
@@ -111,18 +116,20 @@ public class GuessActivity extends Activity {
 
     private void updateDb(Boolean correct) {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
-        Cursor cursor;
         if (correct) {
-            cursor = db.rawQuery("UPDATE Countries SET usages = usages+1,streak=streak+1,won=won+1 WHERE name='"+correctCountryName+"'",null);
+            String strSQL = "UPDATE Countries SET usages = usages+1,streak=streak+1,won=won+1 WHERE name='"+correctCountryName+"'";
+            db.execSQL(strSQL);
+
+
             Account.upScore();
             if (Account.score()>Account.highScore()) {
                 Account.setHighScore(Account.score());
             }
         } else {
-            cursor = db.rawQuery("UPDATE Countries SET usages = usages+1,streak=0,lost=lost+1 WHERE name='"+correctCountryName+"'",null);
+            String strSQL ="UPDATE Countries SET usages = usages+1,streak=0,lost=lost+1 WHERE name='"+correctCountryName+"'";
+            db.execSQL(strSQL);
             Account.resetScore();
         }
-        cursor.close();
     }
 
     private void build(ArrayList<MainItem> menuItems) {
@@ -137,11 +144,6 @@ public class GuessActivity extends Activity {
             @Override
             public void onScrollStateChanged(RecyclerView wearableRecyclerView, int newState) {
                 super.onScrollStateChanged(wearableRecyclerView, newState);
-
-                if (!wearableRecyclerView.canScrollVertically(1) && newState==RecyclerView.SCROLL_STATE_IDLE) {
-                    Log.d("-----","end");
-                    vibrate();
-                }
             }
         });
 
@@ -153,8 +155,7 @@ public class GuessActivity extends Activity {
                 switch (menuItem.getType()) {
                     case "guess": {
                         vibrate();
-                        createFeedSolution(menuItem.correct);
-
+                        createFeedSolution(menuItem.correct,menuItem.emoji);
                         break;
                     }
                     case "skip": {
@@ -198,7 +199,7 @@ public class GuessActivity extends Activity {
         } else if (type.equals("noStreak")) {
             cursor= db.rawQuery("select * from Countries WHERE streak = 0 order by RANDOM() limit 4",null);
         } else { // least
-            cursor= db.rawQuery("select * from Countries order by usages DESC limit 4",null);
+            cursor= db.rawQuery("select * from Countries order by usages ASC limit 4",null);
         }
 
         ArrayList<Country> items = new ArrayList<>();

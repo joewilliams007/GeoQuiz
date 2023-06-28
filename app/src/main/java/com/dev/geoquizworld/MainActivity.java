@@ -140,43 +140,50 @@ public class MainActivity extends Activity {
     public void createFeedList(){
         ArrayList<MainItem> menuItems = new ArrayList<>();
 
-        menuItems.add(new MainItem("heading","G A M E",false));
-        menuItems.add(new MainItem("any","any flags",false));
-        menuItems.add(new MainItem("noStreak","flags without 2-win-streak",false));
-        menuItems.add(new MainItem("least","least played",false));
+        menuItems.add(new MainItem("heading","G A M E",false,null));
+        menuItems.add(new MainItem("any","any flags",false,null));
+        menuItems.add(new MainItem("noStreak","flags without 2-win-streak",false,null));
+        menuItems.add(new MainItem("least","least played",false,null));
 
         String stats = "S T A T I S T I C S\n\n"
                 +"total guesses: "+Account.guesses()
-                +"\n2+ win-streak: "+getStreakCount()+"%"
+                +"\n2+ win-streak: "+round(getStreakCount(),2)+"%"
                 +"\ncurrent game streak: "+Account.score()
                 +"\nhigh score: "+Account.highScore()
                 +"\nflags played "+getPlayedCount()+"/261";
-        menuItems.add(new MainItem("section",stats,false));
+        menuItems.add(new MainItem("section",stats,false,null));
 
-        menuItems.add(new MainItem("heading","A B O U T",false));
-        menuItems.add(new MainItem("section","developer: joewilliams007 :)",false));
-        menuItems.add(new MainItem("github","GitHub",false));
-        menuItems.add(new MainItem("section","created with <3",false));
+        menuItems.add(new MainItem("heading","A B O U T",false,null));
+        menuItems.add(new MainItem("section","dev :) joewilliams007",false,null));
+        menuItems.add(new MainItem("github","GitHub",false,null));
+        menuItems.add(new MainItem("section","created with <3",false,null));
 
         build(menuItems);
     }
+    public static double round(double value, int places) {
+        if (places < 0) throw new IllegalArgumentException();
 
-    public int getStreakCount() {
+        long factor = (long) Math.pow(10, places);
+        value = value * factor;
+        long tmp = Math.round(value);
+        return (double) tmp / factor;
+    }
+    public double getStreakCount() {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         String countQuery = "SELECT * FROM Countries WHERE streak > 1";
         Cursor cursor = db.rawQuery(countQuery, null);
-        int count = cursor.getCount();
+        double count = cursor.getCount();
         cursor.close();
 
         if (count != 0) {
-            count = 261/count;
+            count = count*0.3831417625;
         }
 
         return count;
     }
     public int getPlayedCount() {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
-        String countQuery = "SELECT  * FROM Countries WHERE usages > 0";
+        String countQuery = "SELECT * FROM Countries WHERE usages > 0";
         Cursor cursor = db.rawQuery(countQuery, null);
         int count = cursor.getCount();
         cursor.close();
