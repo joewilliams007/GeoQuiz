@@ -49,5 +49,5 @@ Or [PlayStore](https://play.google.com/store/apps/details?id=com.dev.geoquizworl
 #### OR You can build the project yourself and use adb wifi to connect to your watch
 
 
-## Credi
+## Credit
 credit to the JSON source for the flags to [risan](https://github.com/risan/country-flag-emoji-json)
