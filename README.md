@@ -1,4 +1,4 @@
-# GeoQuiz
+# GeoQuiz for wear-os
 Guess the flag! Train your knowledge about flags.
 
 You will be given a flag and then you have to choose between four country names. One of those is correct.
