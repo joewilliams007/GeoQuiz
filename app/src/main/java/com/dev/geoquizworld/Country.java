@@ -13,6 +13,7 @@ public class Country {
     Integer streak;
     Boolean saved;
 
+
     public Country(Long _id, String name, String code, String emoji, String unicode, String image, Integer usages, Integer won, Integer lost, Integer streak, Boolean saved) {
         this._id = _id;
         this.name = name;
@@ -23,8 +24,8 @@ public class Country {
         this.usages = usages;
         this.won = won;
         this.lost = lost;
-        this.saved = saved;
         this.streak = streak;
+        this.saved = saved;
     }
 
     public Long get_id() {
@@ -70,4 +71,5 @@ public class Country {
     public Boolean getSaved() {
         return saved;
     }
+
 }

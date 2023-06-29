@@ -1,6 +1,7 @@
 package com.dev.geoquizworld;
 
 import static com.dev.geoquizworld.Account.vibrate;
+import static com.dev.geoquizworld.MainActivity.openUrl;
 
 import android.app.Activity;
 import android.content.ContentValues;
@@ -95,6 +96,15 @@ public class GuessActivity extends Activity {
         } else {
             menuItems.add(new MainItem("settings","correct! it is\n"+correctCountryName+"\n\nscore: "+(Account.score()+1),false,null));
         }
+
+        if (!correctCountryName.contains(" ")){
+            menuItems.add(new MainItem("wikipedia","search wiki",false,null));
+
+            menuItems.add(new MainItem("settings","",false,null));
+            menuItems.add(new MainItem("settings","",false,null));
+            menuItems.add(new MainItem("settings","",false,null));
+        }
+
         Account.upGuesses();
 
         SQLiteDatabase db = dbHelper.getWritableDatabase();
@@ -151,16 +161,25 @@ public class GuessActivity extends Activity {
             @Override
             public void onItemClicked(final Integer menuPosition) {
                 MainItem menuItem = menuItems.get(menuPosition);
-
+                vibrate();
                 switch (menuItem.getType()) {
                     case "guess": {
-                        vibrate();
                         createFeedSolution(menuItem.correct,menuItem.emoji);
                         break;
                     }
                     case "skip": {
-                        vibrate();
                         getFlag();
+                        break;
+                    }
+                    case "wikipedia": {
+                        Intent intent = new Intent(GuessActivity.this, WikiActivity.class);
+                        intent.putExtra("query",correctCountryName);
+                        intent.putExtra("emoji",correctCountryEmoji);
+                        startActivity(intent);
+                        break;
+                    }
+                    case "google": {
+                        openUrl("https://www.google.com/search?client=mobile&q=");
                         break;
                     }
                     /*case "notif": {
@@ -169,7 +188,6 @@ public class GuessActivity extends Activity {
                         break;
                     }*/
                     default: {
-                        vibrate();
                         break;
                     }
                 }
