@@ -1,10 +1,8 @@
 package com.dev.geoquizworld;
 
-import static com.dev.geoquizworld.Account.vibrate;
 import static com.dev.geoquizworld.MainActivity.openUrl;
 
 import android.app.Activity;
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -16,9 +14,6 @@ import android.os.Looper;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
 import android.os.VibratorManager;
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.widget.Toast;
 
 import androidx.recyclerview.widget.RecyclerView;
@@ -27,19 +22,7 @@ import androidx.wear.widget.WearableRecyclerView;
 
 import com.dev.geoquizworld.animations.Tools;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
-import java.io.StringWriter;
-import java.io.Writer;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class GuessActivity extends Activity {
@@ -56,8 +39,8 @@ public class GuessActivity extends Activity {
         getFlag();
     }
 
-    String correctCountryName = null;
-    String correctCountryEmoji = null;
+    String correctCountryName = null, correctCountryEmoji = null, latitude, longitude;
+    Country correctCountry;
 
     public void createFeedList(ArrayList<Country> items){
         ArrayList<MainItem> menuItems = new ArrayList<>();
@@ -72,6 +55,9 @@ public class GuessActivity extends Activity {
                 isCorrect = true;
                 correctCountryName = country.getName();
                 correctCountryEmoji = country.getEmoji();
+                longitude = country.getLongitude();
+                latitude = country.getLatitude();
+                correctCountry = country;
             }
             menuItems.add(new MainItem("guess",country.name,isCorrect,country.emoji));
             i++;
@@ -92,18 +78,57 @@ public class GuessActivity extends Activity {
 
         menuItems.add(new MainItem("smallFlag",correctCountryEmoji,false,null));
         if (!correct) {
-            menuItems.add(new MainItem("settings","wrong. correct name is\n"+correctCountryName,false,null));
+            menuItems.add(new MainItem("settings","wrong. correct name is "+correctCountryName,false,null));
         } else {
-            menuItems.add(new MainItem("settings","correct! it is\n"+correctCountryName+"\n\nscore: "+(Account.score()+1),false,null));
+            menuItems.add(new MainItem("settings","correct! it is "+correctCountryName+"\nscore: "+(Account.score()+1),false,null));
         }
 
-        if (!correctCountryName.contains(" ")){
-            menuItems.add(new MainItem("wikipedia","search wiki",false,null));
-
-            menuItems.add(new MainItem("settings","",false,null));
-            menuItems.add(new MainItem("settings","",false,null));
-            menuItems.add(new MainItem("settings","",false,null));
+        String continent = null;
+        switch (correctCountry.continent) {
+            case "AF":
+                continent = "Africa";
+                break;
+            case "EU":
+                continent = "Europe";
+                break;
+            case "AN":
+                continent = "Antarctica";
+                break;
+            case "AS":
+                continent = "Asia";
+                break;
+            case "OC":
+                continent = "Oceania";
+                break;
+            case "NA":
+                continent = "North America";
+                break;
+            case "SA":
+                continent = "South America";
+                break;
         }
+
+        menuItems.add(new MainItem("next","next",false,null));
+
+        menuItems.add(new MainItem("info","C O N T I N E N T\n\n"+continent,false,null));
+        menuItems.add(new MainItem("info","R E G I O N\n\n"+correctCountry.region+"\n"+correctCountry.subregion,false,null));
+        menuItems.add(new MainItem("info","C A P I T A L\n\n"+correctCountry.capital,false,null));
+        menuItems.add(new MainItem("info","A R E A\n\n"+formatNumber(String.valueOf(correctCountry.area))+" km²",false,null));
+        menuItems.add(new MainItem("info","C U R R E N C Y\n\n"+correctCountry.currency,false,null));
+        if (correctCountry.unMember) {
+            menuItems.add(new MainItem("info","U N  M E M B E R\n\n"+"yes",false,null));
+        } else {
+            menuItems.add(new MainItem("info","U N  M E M B E R\n\n"+"no",false,null));
+        }
+        menuItems.add(new MainItem("map","map",false,null));
+
+        String s = correctCountry.getExtract();
+        if (s.length() > 100) {
+            s = s.substring(0, Math.min(s.length(), 100)) + "...";
+        }
+        menuItems.add(new MainItem("translations","translations",false,null));
+        menuItems.add(new MainItem("extract","read more",false,null));
+        menuItems.add(new MainItem("extract_text",s,false,null));
 
         Account.upGuesses();
 
@@ -113,15 +138,6 @@ public class GuessActivity extends Activity {
 
 
         build(menuItems);
-
-        final Handler handler = new Handler(Looper.getMainLooper());
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                getFlag();
-            }
-        }, 3500);
-
     }
 
     private void updateDb(Boolean correct) {
@@ -167,14 +183,34 @@ public class GuessActivity extends Activity {
                         createFeedSolution(menuItem.correct,menuItem.emoji);
                         break;
                     }
+                    case "next":
                     case "skip": {
                         getFlag();
                         break;
                     }
-                    case "wikipedia": {
-                        Intent intent = new Intent(GuessActivity.this, WikiActivity.class);
-                        intent.putExtra("query",correctCountryName);
-                        intent.putExtra("emoji",correctCountryEmoji);
+                    case "map": {
+                        Intent intent = new Intent(GuessActivity.this, MapActivity.class);
+                        intent.putExtra("name",correctCountryName);
+                        intent.putExtra("latitude",latitude);
+                        intent.putExtra("longitude",longitude);
+                        startActivity(intent);
+                        break;
+                    }
+                    case "extract_text":
+                    case "extract": {
+                        Intent intent = new Intent(GuessActivity.this, ExtractActivity.class);
+                        intent.putExtra("extract",correctCountryEmoji+" "+correctCountryName+"\n\n"+correctCountry.extract);
+                        startActivity(intent);
+                        break;
+                    }
+                    case "translations": {
+                        Intent intent = new Intent(GuessActivity.this, ExtractActivity.class);
+                        intent.putExtra("extract",correctCountry.emoji+" "+correctCountry.name+"\n\n"
+                                +"\uD83C\uDDE9\uD83C\uDDEA "+correctCountry.deu
+                                +"\n\uD83C\uDDEB\uD83C\uDDF7 "+correctCountry.fra
+                                +"\n\uD83C\uDDF7\uD83C\uDDFA "+correctCountry.rus
+                                +"\n\uD83C\uDDEA\uD83C\uDDF8 "+correctCountry.spa
+                        );
                         startActivity(intent);
                         break;
                     }
@@ -223,19 +259,39 @@ public class GuessActivity extends Activity {
         ArrayList<Country> items = new ArrayList<>();
         while(cursor.moveToNext()) {
             long itemId = cursor.getLong(cursor.getColumnIndexOrThrow(CountryReaderContract.FeedEntry._ID));
+            Integer country_id = cursor.getInt(cursor.getColumnIndexOrThrow(CountryReaderContract.FeedEntry.COLUMN_COUNTRIES_COUNTRY_ID));
+            String shortName = cursor.getString(cursor.getColumnIndexOrThrow(CountryReaderContract.FeedEntry.COLUMN_COUNTRIES_SHORTNAME));
             String name = cursor.getString(cursor.getColumnIndexOrThrow(CountryReaderContract.FeedEntry.COLUMN_COUNTRIES_NAME));
-            String code = cursor.getString(cursor.getColumnIndexOrThrow(CountryReaderContract.FeedEntry.COLUMN_COUNTRIES_CODE));
+            String nativeName = cursor.getString(cursor.getColumnIndexOrThrow(CountryReaderContract.FeedEntry.COLUMN_COUNTRIES_NATIVE));
+            String currency = cursor.getString(cursor.getColumnIndexOrThrow(CountryReaderContract.FeedEntry.COLUMN_COUNTRIES_CURRENCY));
+            String continent = cursor.getString(cursor.getColumnIndexOrThrow(CountryReaderContract.FeedEntry.COLUMN_COUNTRIES_CONTINENT));
+            String capital = cursor.getString(cursor.getColumnIndexOrThrow(CountryReaderContract.FeedEntry.COLUMN_COUNTRIES_CAPITAL));
             String emoji = cursor.getString(cursor.getColumnIndexOrThrow(CountryReaderContract.FeedEntry.COLUMN_COUNTRIES_EMOJI));
-            String unicode = cursor.getString(cursor.getColumnIndexOrThrow(CountryReaderContract.FeedEntry.COLUMN_COUNTRIES_UNICODE));
-            String image = cursor.getString(cursor.getColumnIndexOrThrow(CountryReaderContract.FeedEntry.COLUMN_COUNTRIES_IMAGE));
-
+            String emojiU = cursor.getString(cursor.getColumnIndexOrThrow(CountryReaderContract.FeedEntry.COLUMN_COUNTRIES_EMOJIU));
+            String phone = cursor.getString(cursor.getColumnIndexOrThrow(CountryReaderContract.FeedEntry.COLUMN_COUNTRIES_PHONE));
+            String extract = cursor.getString(cursor.getColumnIndexOrThrow(CountryReaderContract.FeedEntry.COLUMN_COUNTRIES_EXTRACT));
+            String latitude = cursor.getString(cursor.getColumnIndexOrThrow(CountryReaderContract.FeedEntry.COLUMN_COUNTRIES_LATITUDE));
+            String longitude = cursor.getString(cursor.getColumnIndexOrThrow(CountryReaderContract.FeedEntry.COLUMN_COUNTRIES_LONGITUDE));
+            String region = cursor.getString(cursor.getColumnIndexOrThrow(CountryReaderContract.FeedEntry.COLUMN_COUNTRIES_REGION));
+            String subregion = cursor.getString(cursor.getColumnIndexOrThrow(CountryReaderContract.FeedEntry.COLUMN_COUNTRIES_SUBREGION));
+            String deu = cursor.getString(cursor.getColumnIndexOrThrow(CountryReaderContract.FeedEntry.COLUMN_COUNTRIES_DEU));
+            String fra = cursor.getString(cursor.getColumnIndexOrThrow(CountryReaderContract.FeedEntry.COLUMN_COUNTRIES_FRA));
+            String rus = cursor.getString(cursor.getColumnIndexOrThrow(CountryReaderContract.FeedEntry.COLUMN_COUNTRIES_RUS));
+            String spa = cursor.getString(cursor.getColumnIndexOrThrow(CountryReaderContract.FeedEntry.COLUMN_COUNTRIES_SPA));
+            Integer area = cursor.getInt(cursor.getColumnIndexOrThrow(CountryReaderContract.FeedEntry.COLUMN_COUNTRIES_AREA));
+            Integer independent = cursor.getInt(cursor.getColumnIndexOrThrow(CountryReaderContract.FeedEntry. COLUMN_COUNTRIES_INDEPENDENT));
+            String status = cursor.getString(cursor.getColumnIndexOrThrow(CountryReaderContract.FeedEntry.COLUMN_COUNTRIES_STATUS));
+            Integer unmember = cursor.getInt(cursor.getColumnIndexOrThrow(CountryReaderContract.FeedEntry.COLUMN_COUNTRIES_UNMEMBER));
             Integer usages = Integer.valueOf(cursor.getString(cursor.getColumnIndexOrThrow(CountryReaderContract.FeedEntry.COLUMN_COUNTRIES_USAGES)));
             Integer won = Integer.valueOf(cursor.getString(cursor.getColumnIndexOrThrow(CountryReaderContract.FeedEntry.COLUMN_COUNTRIES_WON)));
             Integer lost = Integer.valueOf(cursor.getString(cursor.getColumnIndexOrThrow(CountryReaderContract.FeedEntry.COLUMN_COUNTRIES_LOST)));
             Integer streak = Integer.valueOf(cursor.getString(cursor.getColumnIndexOrThrow(CountryReaderContract.FeedEntry.COLUMN_COUNTRIES_STREAK)));
             int saved = cursor.getInt(cursor.getColumnIndexOrThrow(CountryReaderContract.FeedEntry.COLUMN_COUNTRIES_SAVED));
             boolean isSaved = saved == 1;
-            items.add(new Country(itemId,name,code,emoji,unicode,image,usages,won,lost,streak,isSaved));
+            boolean isIndependent = independent == 1;
+            boolean isUnmember = unmember == 1;
+            items.add(new Country(itemId,country_id,shortName,name,nativeName,currency,continent,capital,emoji,emojiU,phone,extract,latitude,longitude,
+                    region,subregion,deu,fra,rus,spa,area,isIndependent,status,isUnmember,usages,won,lost,streak,isSaved));
         }
         cursor.close();
 
@@ -273,5 +329,26 @@ public class GuessActivity extends Activity {
             System.out.println("vibration failed "+e.getMessage());
         }
 
+    }
+
+    public static String formatNumber(String number) {
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append(number);
+        String string = String.valueOf(number);
+
+        if(string.contains("."))
+            string= (String) string.subSequence(0,string.indexOf("."));
+
+        if(string.length() > 3) {
+            int firstComma=(string.length() % 3);
+            int countComma = (string.length()-1)/3;
+
+            if(firstComma != 0)
+                stringBuilder.insert(firstComma, ",");
+
+            for(int i = stringBuilder.indexOf(",")+4; i<string.length()+countComma; i+=4)
+                stringBuilder.insert(i, ",");
+        }
+        return stringBuilder.toString();
     }
 }

@@ -82,6 +82,24 @@ public class MainAdapter extends WearableRecyclerView.Adapter<MainAdapter.Recycl
             case "noStreak":
             case "least":
             case "github":
+            case "next":
+            case "extract":
+            case "map":
+            case "EU":
+            case "AS":
+            case "NA":
+            case "SA":
+            case "AF":
+            case "OC":
+            case "AN":
+            case "back":
+            case "browse":
+            case "country":
+            case "world_map":
+            case "translations":
+            case "size":
+            case "all":
+            case "country_area":
                 holder.menuItem.setText(text);
                 break;
             default:
