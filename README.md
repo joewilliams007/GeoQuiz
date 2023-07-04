@@ -23,6 +23,9 @@ Note: The newest version will always be on GitHub first.
 - [x] flags without 2-win-streak
 - [x] least played flags
 - [x] statistics (total, streaks, high score)
+- [x] browse countries
+- [x] get extracts and much data already offline for each country
+- [x] view location of country on a map
 
 ## Download
 
@@ -50,6 +53,10 @@ Or [PlayStore](https://play.google.com/store/apps/details?id=com.dev.geoquizworl
 
 
 ## Credit
-credit to the JSON source for the flags to [risan](https://github.com/risan/country-flag-emoji-json)
+credit to the JSON source for the flags to [risan]([https://github.com/risan/country-flag-emoji-json](https://github.com/khkwan0/countryCityStateJson)
+
+credit to [mledoze](https://github.com/mledoze/countries) for pulling so much information of countries to one place
+
+credit to the Wikipedia for the country extracts
 
 to be fair, i also have to give credit to the game of DegerGames, [Super Flags! Flag Quiz](https://play.google.com/store/apps/details?id=app.retro.quizza&hl=en&gl=US). I got much inspiration from that app. However, i was not satisfied with the design of the game, displaying of statistics, missing haptic feedback for bezel interfaces, as well as the amount of ads. No way was i going to pay to remove those! That app seemed rushed, as to just publish as many games as possible. But what have we learned? Quality > Quantity. Because the game was still fun, i decided to be inspired by the game and made my version, GeoQuiz. Now it is the end of the day and im glad i am done before the next day. And trust me. It took me more time to prepare the PlayStore release then the coding itself! I hope you enjoy it though. 
