@@ -18,7 +18,6 @@ import android.os.VibrationEffect;
 import android.os.Vibrator;
 import android.os.VibratorManager;
 import android.provider.BaseColumns;
-import android.util.Log;
 import android.widget.Toast;
 
 import androidx.recyclerview.widget.RecyclerView;
@@ -53,14 +52,14 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class MainActivity extends Activity {
     WearableRecyclerView wearableRecyclerView;
-    Boolean isBrowse = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Tools.setTheme(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         wearableRecyclerView = findViewById(R.id.main_menu_view);
-        isBrowse = false; // not browsing countries, refresh on reload ok
         if (Account.isInsertedToDb()) {
             createFeedList();
         } else {
@@ -77,8 +76,6 @@ public class MainActivity extends Activity {
     JSONArray contacts = null;
 
     CountryReaderDbHelper dbHelper = new CountryReaderDbHelper(MyApplication.getAppContext());
-
-
 
 
     public static void toast(String message) {
@@ -181,197 +178,7 @@ public class MainActivity extends Activity {
         build(menuItems);
     }
 
-    public void createContinentList(){
-        ArrayList<MainItem> menuItems = new ArrayList<>();
 
-        menuItems.add(new MainItem("heading","C O N T I N E N T S",false,null));
-        menuItems.add(new MainItem("back","<- back to menu",false,null));
-
-        menuItems.add(new MainItem("EU","Europe",false,null));
-        menuItems.add(new MainItem("AS","Asia",false,null));
-        menuItems.add(new MainItem("NA","North America",false,null));
-        menuItems.add(new MainItem("SA","South America",false,null));
-        menuItems.add(new MainItem("AF","Africa",false,null));
-        menuItems.add(new MainItem("OC","Oceania",false,null));
-        menuItems.add(new MainItem("AN","Antarctica",false,null));
-        menuItems.add(new MainItem("heading","M O R E",false,null));
-        menuItems.add(new MainItem("all","All countries",false,null));
-        menuItems.add(new MainItem("size","Countries ordered by area size",false,null));
-        menuItems.add(new MainItem("world_map","World Map",false,null));
-        menuItems.add(new MainItem("empty","",false,null));
-        menuItems.add(new MainItem("empty","",false,null));
-        build(menuItems);
-    }
-    public void createCountryList(String query, Boolean showArea){
-        SQLiteDatabase db = dbHelper.getReadableDatabase();
-        Cursor cursor= db.rawQuery(query,null);
-
-
-        ArrayList<Country> items = new ArrayList<>();
-        while(cursor.moveToNext()) {
-            long itemId = cursor.getLong(cursor.getColumnIndexOrThrow(CountryReaderContract.FeedEntry._ID));
-            Integer country_id = cursor.getInt(cursor.getColumnIndexOrThrow(CountryReaderContract.FeedEntry.COLUMN_COUNTRIES_COUNTRY_ID));
-            String shortName = cursor.getString(cursor.getColumnIndexOrThrow(CountryReaderContract.FeedEntry.COLUMN_COUNTRIES_SHORTNAME));
-            String name = cursor.getString(cursor.getColumnIndexOrThrow(CountryReaderContract.FeedEntry.COLUMN_COUNTRIES_NAME));
-            String nativeName = cursor.getString(cursor.getColumnIndexOrThrow(CountryReaderContract.FeedEntry.COLUMN_COUNTRIES_NATIVE));
-            String currency = cursor.getString(cursor.getColumnIndexOrThrow(CountryReaderContract.FeedEntry.COLUMN_COUNTRIES_CURRENCY));
-            String continent = cursor.getString(cursor.getColumnIndexOrThrow(CountryReaderContract.FeedEntry.COLUMN_COUNTRIES_CONTINENT));
-            String capital = cursor.getString(cursor.getColumnIndexOrThrow(CountryReaderContract.FeedEntry.COLUMN_COUNTRIES_CAPITAL));
-            String emoji = cursor.getString(cursor.getColumnIndexOrThrow(CountryReaderContract.FeedEntry.COLUMN_COUNTRIES_EMOJI));
-            String emojiU = cursor.getString(cursor.getColumnIndexOrThrow(CountryReaderContract.FeedEntry.COLUMN_COUNTRIES_EMOJIU));
-            String phone = cursor.getString(cursor.getColumnIndexOrThrow(CountryReaderContract.FeedEntry.COLUMN_COUNTRIES_PHONE));
-            String extract = cursor.getString(cursor.getColumnIndexOrThrow(CountryReaderContract.FeedEntry.COLUMN_COUNTRIES_EXTRACT));
-            String latitude = cursor.getString(cursor.getColumnIndexOrThrow(CountryReaderContract.FeedEntry.COLUMN_COUNTRIES_LATITUDE));
-            String longitude = cursor.getString(cursor.getColumnIndexOrThrow(CountryReaderContract.FeedEntry.COLUMN_COUNTRIES_LONGITUDE));
-            String region = cursor.getString(cursor.getColumnIndexOrThrow(CountryReaderContract.FeedEntry.COLUMN_COUNTRIES_REGION));
-            String subregion = cursor.getString(cursor.getColumnIndexOrThrow(CountryReaderContract.FeedEntry.COLUMN_COUNTRIES_SUBREGION));
-            String deu = cursor.getString(cursor.getColumnIndexOrThrow(CountryReaderContract.FeedEntry.COLUMN_COUNTRIES_DEU));
-            String fra = cursor.getString(cursor.getColumnIndexOrThrow(CountryReaderContract.FeedEntry.COLUMN_COUNTRIES_FRA));
-            String rus = cursor.getString(cursor.getColumnIndexOrThrow(CountryReaderContract.FeedEntry.COLUMN_COUNTRIES_RUS));
-            String spa = cursor.getString(cursor.getColumnIndexOrThrow(CountryReaderContract.FeedEntry.COLUMN_COUNTRIES_SPA));
-            Integer area = cursor.getInt(cursor.getColumnIndexOrThrow(CountryReaderContract.FeedEntry.COLUMN_COUNTRIES_AREA));
-            Integer independent = cursor.getInt(cursor.getColumnIndexOrThrow(CountryReaderContract.FeedEntry. COLUMN_COUNTRIES_INDEPENDENT));
-            String status = cursor.getString(cursor.getColumnIndexOrThrow(CountryReaderContract.FeedEntry.COLUMN_COUNTRIES_STATUS));
-            Integer unmember = cursor.getInt(cursor.getColumnIndexOrThrow(CountryReaderContract.FeedEntry.COLUMN_COUNTRIES_UNMEMBER));
-            Integer usages = Integer.valueOf(cursor.getString(cursor.getColumnIndexOrThrow(CountryReaderContract.FeedEntry.COLUMN_COUNTRIES_USAGES)));
-            Integer won = Integer.valueOf(cursor.getString(cursor.getColumnIndexOrThrow(CountryReaderContract.FeedEntry.COLUMN_COUNTRIES_WON)));
-            Integer lost = Integer.valueOf(cursor.getString(cursor.getColumnIndexOrThrow(CountryReaderContract.FeedEntry.COLUMN_COUNTRIES_LOST)));
-            Integer streak = Integer.valueOf(cursor.getString(cursor.getColumnIndexOrThrow(CountryReaderContract.FeedEntry.COLUMN_COUNTRIES_STREAK)));
-            int saved = cursor.getInt(cursor.getColumnIndexOrThrow(CountryReaderContract.FeedEntry.COLUMN_COUNTRIES_SAVED));
-            boolean isSaved = saved == 1;
-            boolean isIndependent = independent == 1;
-            boolean isUnmember = unmember == 1;
-            items.add(new Country(itemId,country_id,shortName,name,nativeName,currency,continent,capital,emoji,emojiU,phone,extract,latitude,longitude,
-                    region,subregion,deu,fra,rus,spa,area,isIndependent,status,isUnmember,usages,won,lost,streak,isSaved));
-        }
-        cursor.close();
-
-
-        ArrayList<MainItem> menuItems = new ArrayList<>();
-
-        menuItems.add(new MainItem("heading","C O U N T R I E S",false,null));
-        menuItems.add(new MainItem("back","<- back to menu",false,null));
-        menuItems.add(new MainItem("browse","<- back to continents",false,null));
-        for (Country country : items){
-            if (showArea) {
-                menuItems.add(new MainItem("country_area",country.name+"\n"+formatNumber(String.valueOf(country.getArea()))+" km²",false,country.emoji));
-            } else {
-                menuItems.add(new MainItem("country",country.name,false,country.emoji));
-            }
-         }
-        menuItems.add(new MainItem("empty","",false,null));
-        menuItems.add(new MainItem("empty","",false,null));
-        build(menuItems);
-    }
-
-    Country correctCountry;
-
-    public void createCountryData(String country){
-        isBrowse = true;
-        ArrayList<MainItem> menuItems = new ArrayList<>();
-        SQLiteDatabase db = dbHelper.getReadableDatabase();
-        Cursor cursor= db.rawQuery("select * from Countries WHERE name = '"+country+"'",null);
-
-        ArrayList<Country> items = new ArrayList<>();
-        while(cursor.moveToNext()) {
-            long itemId = cursor.getLong(cursor.getColumnIndexOrThrow(CountryReaderContract.FeedEntry._ID));
-            Integer country_id = cursor.getInt(cursor.getColumnIndexOrThrow(CountryReaderContract.FeedEntry.COLUMN_COUNTRIES_COUNTRY_ID));
-            String shortName = cursor.getString(cursor.getColumnIndexOrThrow(CountryReaderContract.FeedEntry.COLUMN_COUNTRIES_SHORTNAME));
-            String name = cursor.getString(cursor.getColumnIndexOrThrow(CountryReaderContract.FeedEntry.COLUMN_COUNTRIES_NAME));
-            String nativeName = cursor.getString(cursor.getColumnIndexOrThrow(CountryReaderContract.FeedEntry.COLUMN_COUNTRIES_NATIVE));
-            String currency = cursor.getString(cursor.getColumnIndexOrThrow(CountryReaderContract.FeedEntry.COLUMN_COUNTRIES_CURRENCY));
-            String continent = cursor.getString(cursor.getColumnIndexOrThrow(CountryReaderContract.FeedEntry.COLUMN_COUNTRIES_CONTINENT));
-            String capital = cursor.getString(cursor.getColumnIndexOrThrow(CountryReaderContract.FeedEntry.COLUMN_COUNTRIES_CAPITAL));
-            String emoji = cursor.getString(cursor.getColumnIndexOrThrow(CountryReaderContract.FeedEntry.COLUMN_COUNTRIES_EMOJI));
-            String emojiU = cursor.getString(cursor.getColumnIndexOrThrow(CountryReaderContract.FeedEntry.COLUMN_COUNTRIES_EMOJIU));
-            String phone = cursor.getString(cursor.getColumnIndexOrThrow(CountryReaderContract.FeedEntry.COLUMN_COUNTRIES_PHONE));
-            String extract = cursor.getString(cursor.getColumnIndexOrThrow(CountryReaderContract.FeedEntry.COLUMN_COUNTRIES_EXTRACT));
-            String latitude = cursor.getString(cursor.getColumnIndexOrThrow(CountryReaderContract.FeedEntry.COLUMN_COUNTRIES_LATITUDE));
-            String longitude = cursor.getString(cursor.getColumnIndexOrThrow(CountryReaderContract.FeedEntry.COLUMN_COUNTRIES_LONGITUDE));
-            String region = cursor.getString(cursor.getColumnIndexOrThrow(CountryReaderContract.FeedEntry.COLUMN_COUNTRIES_REGION));
-            String subregion = cursor.getString(cursor.getColumnIndexOrThrow(CountryReaderContract.FeedEntry.COLUMN_COUNTRIES_SUBREGION));
-            String deu = cursor.getString(cursor.getColumnIndexOrThrow(CountryReaderContract.FeedEntry.COLUMN_COUNTRIES_DEU));
-            String fra = cursor.getString(cursor.getColumnIndexOrThrow(CountryReaderContract.FeedEntry.COLUMN_COUNTRIES_FRA));
-            String rus = cursor.getString(cursor.getColumnIndexOrThrow(CountryReaderContract.FeedEntry.COLUMN_COUNTRIES_RUS));
-            String spa = cursor.getString(cursor.getColumnIndexOrThrow(CountryReaderContract.FeedEntry.COLUMN_COUNTRIES_SPA));
-            Integer area = cursor.getInt(cursor.getColumnIndexOrThrow(CountryReaderContract.FeedEntry.COLUMN_COUNTRIES_AREA));
-            Integer independent = cursor.getInt(cursor.getColumnIndexOrThrow(CountryReaderContract.FeedEntry. COLUMN_COUNTRIES_INDEPENDENT));
-            String status = cursor.getString(cursor.getColumnIndexOrThrow(CountryReaderContract.FeedEntry.COLUMN_COUNTRIES_STATUS));
-            Integer unmember = cursor.getInt(cursor.getColumnIndexOrThrow(CountryReaderContract.FeedEntry.COLUMN_COUNTRIES_UNMEMBER));
-            Integer usages = Integer.valueOf(cursor.getString(cursor.getColumnIndexOrThrow(CountryReaderContract.FeedEntry.COLUMN_COUNTRIES_USAGES)));
-            Integer won = Integer.valueOf(cursor.getString(cursor.getColumnIndexOrThrow(CountryReaderContract.FeedEntry.COLUMN_COUNTRIES_WON)));
-            Integer lost = Integer.valueOf(cursor.getString(cursor.getColumnIndexOrThrow(CountryReaderContract.FeedEntry.COLUMN_COUNTRIES_LOST)));
-            Integer streak = Integer.valueOf(cursor.getString(cursor.getColumnIndexOrThrow(CountryReaderContract.FeedEntry.COLUMN_COUNTRIES_STREAK)));
-            int saved = cursor.getInt(cursor.getColumnIndexOrThrow(CountryReaderContract.FeedEntry.COLUMN_COUNTRIES_SAVED));
-            boolean isSaved = saved == 1;
-            boolean isIndependent = independent == 1;
-            boolean isUnmember = unmember == 1;
-            items.add(new Country(itemId,country_id,shortName,name,nativeName,currency,continent,capital,emoji,emojiU,phone,extract,latitude,longitude,
-                    region,subregion,deu,fra,rus,spa,area,isIndependent,status,isUnmember,usages,won,lost,streak,isSaved));
-        }
-        cursor.close();
-
-        Country c = items.get(0);
-
-
-        correctCountry = c;
-
-        menuItems.add(new MainItem("smallFlag",c.emoji,false,null));
-        menuItems.add(new MainItem("info",c.name,false,null));
-        String continent = null;
-        switch (c.getContinent()) {
-            case "AF":
-                continent = "Africa";
-                break;
-            case "EU":
-                continent = "Europe";
-                break;
-            case "AN":
-                continent = "Antarctica";
-                break;
-            case "AS":
-                continent = "Asia";
-                break;
-            case "OC":
-                continent = "Oceania";
-                break;
-            case "NA":
-                continent = "North America";
-                break;
-            case "SA":
-                continent = "South America";
-                break;
-        }
-
-
-        menuItems.add(new MainItem("info","C O N T I N E N T\n\n"+continent,false,null));
-        menuItems.add(new MainItem("info","R E G I O N\n\n"+c.getRegion()+"\n"+c.getSubregion(),false,null));
-        menuItems.add(new MainItem("info","C A P I T A L\n\n"+c.getCapital(),false,null));
-        menuItems.add(new MainItem("info","A R E A\n\n"+formatNumber(String.valueOf(c.getArea()))+" km²",false,null));
-        menuItems.add(new MainItem("info","C U R R E N C Y\n\n"+c.getCurrency(),false,null));
-        if (c.getUnMember()) {
-            menuItems.add(new MainItem("info","U N  M E M B E R\n\n"+"yes",false,null));
-        } else {
-            menuItems.add(new MainItem("info","U N  M E M B E R\n\n"+"no",false,null));
-        }
-
-        menuItems.add(new MainItem("map","map",false,null));
-
-        String s = c.getExtract();
-        if (s.length() > 100) {
-            s = s.substring(0, Math.min(s.length(), 100)) + "...";
-        }
-        menuItems.add(new MainItem("translations","translations",false,null));
-        menuItems.add(new MainItem("extract","read more",false,null));
-
-        menuItems.add(new MainItem("back","<- back to menu",false,null));
-        menuItems.add(new MainItem("browse","<- back to continents",false,null));
-
-        menuItems.add(new MainItem("extract_text",s,false,null));
-
-
-        build(menuItems);
-    }
     public static double round(double value, int places) {
         if (places < 0) throw new IllegalArgumentException();
 
@@ -405,9 +212,7 @@ public class MainActivity extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
-        if (!isBrowse) {
-            createFeedList();
-        }
+        createFeedList();
     }
 
     private void build(ArrayList<MainItem> menuItems) {
@@ -434,21 +239,18 @@ public class MainActivity extends Activity {
                     case "any": {
                         Intent intent = new Intent(MainActivity.this, GuessActivity.class);
                         intent.putExtra("type","any");
-                        isBrowse = false;
                         startActivity(intent);
                         break;
                     }
                     case "least": {
                         Intent intent = new Intent(MainActivity.this, GuessActivity.class);
                         intent.putExtra("type","least");
-                        isBrowse = false;
                         startActivity(intent);
                         break;
                     }
                     case "noStreak": {
                         Intent intent = new Intent(MainActivity.this, GuessActivity.class);
                         intent.putExtra("type","noStreak");
-                        isBrowse = false;
                         startActivity(intent);
                         break;
                     }
@@ -456,80 +258,18 @@ public class MainActivity extends Activity {
                         openUrl("https://github.com/joewilliams007/geoQuiz");
                         break;
                     }
-                    case "back": {
-                        createFeedList();
-                        break;
-                    }
                     case "browse": {
-                        createContinentList();
-                        break;
-                    }
-                    case "country": {
-                        createCountryData(menuItem.getText());
-                        break;
-                    }
-                    case "country_area": {
-                        createCountryData(menuItem.getText().split("\n")[0]);
-                        break;
-                    }
-                    case "EU":
-                    case "AS":
-                    case "NA":
-                    case "SA":
-                    case "AF":
-                    case "OC":
-                    case "AN":
-                        createCountryList("select * from Countries WHERE continent = '"+menuItem.getType()+"' ORDER BY name ASC",false);
-                        break;
-                    case "all":
-                        createCountryList("select * from Countries ORDER BY name ASC",false);
-                        break;
-                    case "size":
-                        createCountryList("select * from Countries ORDER BY area DESC",true);
-                        break;
-                    case "map": {
-                        Intent intent = new Intent(MainActivity.this, MapActivity.class);
-                        intent.putExtra("name",correctCountry.name);
-                        intent.putExtra("latitude",correctCountry.latitude);
-                        intent.putExtra("longitude",correctCountry.longitude);
+                        Intent intent = new Intent(MainActivity.this, BrowseActivity.class);
                         startActivity(intent);
                         break;
                     }
-                    case "world_map": {
-                        isBrowse = true;
-                        Intent intent = new Intent(MainActivity.this, MapActivity.class);
-                        startActivity(intent);
-                        break;
-                    }
-                    case "extract_text":
-                    case "extract": {
-                        Intent intent = new Intent(MainActivity.this, ExtractActivity.class);
-                        intent.putExtra("extract",correctCountry.emoji+" "+correctCountry.name+"\n\n"+correctCountry.extract);
-                        startActivity(intent);
-                        break;
-                    }
-                    case "translations": {
-                        Intent intent = new Intent(MainActivity.this, ExtractActivity.class);
-                        intent.putExtra("extract",correctCountry.emoji+" "+correctCountry.name+"\n\n"
-                                +"\uD83C\uDDE9\uD83C\uDDEA "+correctCountry.deu
-                                +"\n\uD83C\uDDEB\uD83C\uDDF7 "+correctCountry.fra
-                                +"\n\uD83C\uDDF7\uD83C\uDDFA "+correctCountry.rus
-                                +"\n\uD83C\uDDEA\uD83C\uDDF8 "+correctCountry.spa
-                        );
-                        startActivity(intent);
-                        break;
-                    }
-                    default: {
 
+                    default: {
                         break;
                     }
                 }
             }
         }));
-
-
-
-
         wearableRecyclerView.requestFocus();
     }
 

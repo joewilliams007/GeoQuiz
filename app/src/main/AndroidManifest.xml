@@ -40,6 +40,15 @@
         <activity
             android:name=".ExtractActivity"
             android:exported="false" />
+        <activity
+            android:name=".BrowseActivity"
+            android:exported="false" />
+        <activity
+            android:name=".CountryActivity"
+            android:exported="false" />
+        <activity
+            android:name=".InfoActivity"
+            android:exported="false" />
     </application>
 
 

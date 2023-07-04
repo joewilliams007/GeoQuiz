@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:id="@+id/swipeFeed"
     android:background="?attr/colorSurface"
-    tools:context=".MainActivity"
+    tools:context=".GuessActivity"
     tools:deviceIds="wear">
 
     <androidx.wear.widget.WearableRecyclerView

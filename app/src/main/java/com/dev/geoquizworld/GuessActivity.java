@@ -66,6 +66,8 @@ public class GuessActivity extends Activity {
         menuItems.add(new MainItem("settings","",false,null));
         build(menuItems);
     }
+
+
     Boolean isSolution = false;
     public void createFeedSolution(Boolean correct, String emoji){
         ArrayList<MainItem> menuItems = new ArrayList<>();

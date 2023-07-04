@@ -94,13 +94,15 @@ public class MainAdapter extends WearableRecyclerView.Adapter<MainAdapter.Recycl
             case "AN":
             case "back":
             case "browse":
-            case "country":
             case "world_map":
             case "translations":
             case "size":
             case "all":
             case "country_area":
                 holder.menuItem.setText(text);
+                break;
+            case "country":
+                holder.menuItem.setText(data_provider.getEmoji()+" "+text);
                 break;
             default:
                 holder.menuItem.setText(text);
