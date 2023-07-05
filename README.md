@@ -26,7 +26,7 @@ Note: The newest version will always be on GitHub first.
 - [x] browse countries
 - [x] get extracts and much data already offline for each country
 - [x] view location of country on a map
-
+- [x] locate game, guess location of country
 ## Download
 
 [Click to download apk](https://github.com/joewilliams007/GeoQuiz/blob/master/app/release/app-release.apk?raw=true)
