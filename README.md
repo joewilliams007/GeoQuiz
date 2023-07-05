@@ -12,13 +12,7 @@ Compatible with wear os minsdk 28.
 
 Tested and developed on Samsung watch5.
 
-## PlayStore
-[PlayStore](https://play.google.com/store/apps/details?id=com.dev.geoquizworld)
-
-Note: The newest version will always be on GitHub first.
-
 ## Features
-
 - [x] random flag
 - [x] flags without 2-win-streak
 - [x] least played flags
@@ -33,7 +27,7 @@ Note: The newest version will always be on GitHub first.
 
 Or download from here: https://github.com/joewilliams007/GeoQuiz/blob/master/app/release/app-release.apk
 
-Or [PlayStore](https://play.google.com/store/apps/details?id=com.dev.geoquizworld)
+Or build from source
 
 ## Installation (sideloading apk to watch)
 
