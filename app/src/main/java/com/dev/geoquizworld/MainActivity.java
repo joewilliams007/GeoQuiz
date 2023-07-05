@@ -157,19 +157,27 @@ public class MainActivity extends Activity {
 
     public void createFeedList(){
         ArrayList<MainItem> menuItems = new ArrayList<>();
-
         menuItems.add(new MainItem("heading","G A M E",false,null));
         menuItems.add(new MainItem("any","any flags",false,null));
         menuItems.add(new MainItem("noStreak","flags without 2-win-streak",false,null));
         menuItems.add(new MainItem("least","least played",false,null));
+        menuItems.add(new MainItem("locate","locate country",false,null));
 
-        String stats = "S T A T I S T I C S\n\n"
+        menuItems.add(new MainItem("heading","S T A T I S T I C S",false,null));
+        String stats = "F L A G S\n\n"
                 +"total guesses: "+Account.guesses()
                 +"\n2+ win streak: "+round(getStreakCount(),2)+"%"
                 +"\ncurrent game streak: "+Account.score()
                 +"\nflags played "+getPlayedCount()+"/248"
                 +"\nhigh score: "+Account.highScore();
         menuItems.add(new MainItem("section",stats,false,null));
+
+        String statsLoc = "L O C A T I O N\n\n"
+                +"total guesses: "+Account.guessesLoc()
+                +"\ncurrent game streak: "+Account.scoreLoc()
+                +"\nhigh score: "+Account.highScoreLoc();
+        menuItems.add(new MainItem("section",statsLoc,false,null));
+
         menuItems.add(new MainItem("browse","browse world",false,null));
         menuItems.add(new MainItem("heading","A B O U T\n\ndev :) joewilliams007",false,null));
         menuItems.add(new MainItem("github","GitHub",false,null));
@@ -263,7 +271,11 @@ public class MainActivity extends Activity {
                         startActivity(intent);
                         break;
                     }
-
+                    case "locate": {
+                        Intent intent = new Intent(MainActivity.this, LocateActivity.class);
+                        startActivity(intent);
+                        break;
+                    }
                     default: {
                         break;
                     }

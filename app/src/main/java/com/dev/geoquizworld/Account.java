@@ -77,6 +77,53 @@ public class Account {
         editor.apply();
     }
 
+    // for location game
+
+    public static int highScoreLoc() {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(MyApplication.getAppContext());
+        return preferences.getInt("highScoreLoc", 0);
+    }
+
+    public static void setHighScoreLoc(int highScore) {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(MyApplication.getAppContext());
+        SharedPreferences.Editor editor = preferences.edit().putInt("highScoreLoc",highScore);
+        editor.apply();
+    }
+
+    public static int scoreLoc() {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(MyApplication.getAppContext());
+        return preferences.getInt("scoreLoc", 0);
+    }
+
+    public static void upScoreLoc(int points) {
+        int highScore = scoreLoc()+points;
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(MyApplication.getAppContext());
+        SharedPreferences.Editor editor = preferences.edit().putInt("scoreLoc",highScore);
+        editor.apply();
+
+        if (Account.scoreLoc()>Account.highScoreLoc()) {
+            Account.setHighScoreLoc(Account.scoreLoc());
+        }
+    }
+
+    public static void resetScoreLoc() {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(MyApplication.getAppContext());
+        SharedPreferences.Editor editor = preferences.edit().putInt("scoreLoc",0);
+        editor.apply();
+    }
+    public static int guessesLoc() {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(MyApplication.getAppContext());
+        return preferences.getInt("guessesLoc", 0);
+    }
+
+    public static void upGuessesLoc() {
+        int guesses = guessesLoc()+1;
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(MyApplication.getAppContext());
+        SharedPreferences.Editor editor = preferences.edit().putInt("guessesLoc",guesses);
+        editor.apply();
+    }
+    //
+
     public static int guesses() {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(MyApplication.getAppContext());
         return preferences.getInt("guesses", 0);

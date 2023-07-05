@@ -49,6 +49,12 @@
         <activity
             android:name=".InfoActivity"
             android:exported="false" />
+        <activity
+            android:name=".LocateActivity"
+            android:exported="false" />
+        <activity
+            android:name=".LocateMapActivity"
+            android:exported="false" />
     </application>
 
 

@@ -10,8 +10,8 @@ android {
         applicationId "com.dev.geoquizworld"
         minSdk 28
         targetSdk 33
-        versionCode 3
-        versionName "1.1"
+        versionCode 4
+        versionName "1.2"
 
     }
 
@@ -45,4 +45,8 @@ dependencies {
 
     implementation 'org.osmdroid:osmdroid-android:6.1.16'
     implementation 'com.kcthota:emoji4j:6.0'
+
+    // https://mvnrepository.com/artifact/org.apache.lucene/lucene-spatial
+    implementation 'org.apache.lucene:lucene-spatial:8.2.0'
+
 }

@@ -83,8 +83,10 @@ public class MainAdapter extends WearableRecyclerView.Adapter<MainAdapter.Recycl
             case "least":
             case "github":
             case "next":
+            case "map_select":
             case "extract":
             case "map":
+            case "tip":
             case "EU":
             case "AS":
             case "NA":
@@ -92,8 +94,8 @@ public class MainAdapter extends WearableRecyclerView.Adapter<MainAdapter.Recycl
             case "AF":
             case "OC":
             case "AN":
-            case "back":
             case "browse":
+            case "locate":
             case "world_map":
             case "translations":
             case "size":
