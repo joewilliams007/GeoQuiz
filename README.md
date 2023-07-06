@@ -47,7 +47,7 @@ Or build from source
 
 
 ## Credit
-credit to the JSON source for the flags to [risan]([https://github.com/risan/country-flag-emoji-json](https://github.com/khkwan0/countryCityStateJson)
+credit to the JSON source for the flags to [risan](https://github.com/risan/country-flag-emoji-json)
 
 credit to [mledoze](https://github.com/mledoze/countries) for pulling so much information of countries to one place
 
