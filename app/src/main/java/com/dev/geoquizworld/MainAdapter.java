@@ -96,6 +96,7 @@ public class MainAdapter extends WearableRecyclerView.Adapter<MainAdapter.Recycl
             case "AN":
             case "browse":
             case "locate":
+            case "noStreakLoc":
             case "world_map":
             case "translations":
             case "size":

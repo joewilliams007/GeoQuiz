@@ -8,6 +8,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteDatabase;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -158,15 +159,21 @@ public class LocateMapActivity extends Activity {
             int score;
             if (inArea.equals("yes")) {
                 score = 10;
+                updateDB(true, name);
             } else if (distanceInKmInt<500)  {
+                updateDB(false, name);
                 score = 7;
             } else if (distanceInKmInt<1000)  {
+                updateDB(false, name);
                 score = 5;
             } else if (distanceInKmInt<2000)  {
+                updateDB(false, name);
                 score = 2;
             } else {
+                updateDB(false, name);
                 score = 0;
             }
+
 
             if (score>0) {
                 Account.upScoreLoc(score);
@@ -194,6 +201,18 @@ public class LocateMapActivity extends Activity {
         }
 
     }
+    CountryReaderDbHelper dbHelper = new CountryReaderDbHelper(MyApplication.getAppContext());
+    private void updateDB(Boolean correct, String correctCountryName) {
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        String strSQL;
+        if (correct) {
+            strSQL = "UPDATE Countries SET loc_usages = loc_usages+1,loc_streak=loc_streak+1,loc_won=loc_won+1 WHERE name='" + correctCountryName + "'";
+        } else {
+            strSQL = "UPDATE Countries SET loc_usages = loc_usages+1,loc_streak=0,loc_lost=loc_lost+1 WHERE name='" + correctCountryName + "'";
+        }
+        db.execSQL(strSQL);
+    }
+
     public double calculateDistanceInMeters(double lat1, double long1, double lat2,
                                             double long2) {
 

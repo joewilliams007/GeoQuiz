@@ -38,6 +38,10 @@ public final class CountryReaderContract {
         public static final String COLUMN_COUNTRIES_WON = "won";
         public static final String COLUMN_COUNTRIES_LOST = "lost";
         public static final String COLUMN_COUNTRIES_STREAK = "streak";
+        public static final String COLUMN_LOCATION_USAGES = "loc_usages";
+        public static final String COLUMN_LOCATION_WON = "loc_won";
+        public static final String COLUMN_LOCATION_LOST = "loc_lost";
+        public static final String COLUMN_LOCATION_STREAK = "loc_streak";
         public static final String COLUMN_COUNTRIES_SAVED = "saved";
     }
 

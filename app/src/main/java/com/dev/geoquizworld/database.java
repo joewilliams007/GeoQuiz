@@ -31,8 +31,12 @@ public class database {
                     CountryReaderContract.FeedEntry.COLUMN_COUNTRIES_WON+ " INTEGER," +
                     CountryReaderContract.FeedEntry.COLUMN_COUNTRIES_LOST+ " INTEGER," +
                     CountryReaderContract.FeedEntry.COLUMN_COUNTRIES_STREAK+ " INTEGER," +
-                    CountryReaderContract.FeedEntry.COLUMN_COUNTRIES_SAVED+ " BOOLEAN)";
+                    CountryReaderContract.FeedEntry.COLUMN_COUNTRIES_SAVED+ " BOOLEAN," +
 
+                    CountryReaderContract.FeedEntry.COLUMN_LOCATION_USAGES+ " INTEGER," +
+                    CountryReaderContract.FeedEntry.COLUMN_LOCATION_WON+ " INTEGER," +
+                    CountryReaderContract.FeedEntry.COLUMN_LOCATION_LOST+ " INTEGER," +
+                    CountryReaderContract.FeedEntry.COLUMN_LOCATION_STREAK+ " INTEGER)";
 
     public static final String SQL_DELETE_ENTRIES =
             "DROP TABLE IF EXISTS " + CountryReaderContract.FeedEntry.TABLE_COUNTRIES;

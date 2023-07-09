@@ -157,16 +157,17 @@ public class MainActivity extends Activity {
 
     public void createFeedList(){
         ArrayList<MainItem> menuItems = new ArrayList<>();
-        menuItems.add(new MainItem("heading","G A M E",false,null));
+        menuItems.add(new MainItem("heading","F L A G S",false,null));
         menuItems.add(new MainItem("any","any flags",false,null));
         menuItems.add(new MainItem("noStreak","flags without 2-win-streak",false,null));
         menuItems.add(new MainItem("least","least played",false,null));
+        menuItems.add(new MainItem("heading","L O C A T E",false,null));
         menuItems.add(new MainItem("locate","locate country",false,null));
-
+        menuItems.add(new MainItem("noStreakLoc","locations without 2-win-streak",false,null));
         menuItems.add(new MainItem("heading","S T A T I S T I C S",false,null));
         String stats = "F L A G S\n\n"
                 +"total guesses: "+Account.guesses()
-                +"\n2+ win streak: "+round(getStreakCount(),2)+"%"
+                +"\n2+ win streak: "+round(getStreakCount("flags"),2)+"%"
                 +"\ncurrent game streak: "+Account.score()
                 +"\nflags played "+getPlayedCount()+"/248"
                 +"\nhigh score: "+Account.highScore();
@@ -174,6 +175,7 @@ public class MainActivity extends Activity {
 
         String statsLoc = "L O C A T I O N\n\n"
                 +"total guesses: "+Account.guessesLoc()
+                +"\n2+ win streak: "+round(getStreakCount("loc"),2)+"%"
                 +"\ncurrent game streak: "+Account.scoreLoc()
                 +"\nhigh score: "+Account.highScoreLoc();
         menuItems.add(new MainItem("section",statsLoc,false,null));
@@ -195,9 +197,15 @@ public class MainActivity extends Activity {
         long tmp = Math.round(value);
         return (double) tmp / factor;
     }
-    public double getStreakCount() {
+    public double getStreakCount(String type) {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
-        String countQuery = "SELECT * FROM Countries WHERE streak > 1";
+        String countQuery;
+        if (type.equals("flags")) {
+            countQuery = "SELECT * FROM Countries WHERE streak > 1";
+        } else {
+            countQuery = "SELECT * FROM Countries WHERE loc_streak > 1";
+        }
+
         Cursor cursor = db.rawQuery(countQuery, null);
         double count = cursor.getCount();
         cursor.close();
@@ -262,6 +270,12 @@ public class MainActivity extends Activity {
                         startActivity(intent);
                         break;
                     }
+                    case "noStreakLoc": {
+                        Intent intent = new Intent(MainActivity.this, LocateActivity.class);
+                        intent.putExtra("type", "noStreak");
+                        startActivity(intent);
+                        break;
+                    }
                     case "github": {
                         openUrl("https://github.com/joewilliams007/geoQuiz");
                         break;
@@ -273,6 +287,7 @@ public class MainActivity extends Activity {
                     }
                     case "locate": {
                         Intent intent = new Intent(MainActivity.this, LocateActivity.class);
+                        intent.putExtra("type", "any");
                         startActivity(intent);
                         break;
                     }
