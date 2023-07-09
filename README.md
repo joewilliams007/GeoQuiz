@@ -12,6 +12,9 @@ Compatible with wear os minsdk 28.
 
 Tested and developed on Samsung watch5.
 
+## PlayStore
+this game is a standalone watch app. To download, please open the PlayStore on your watch and search for GeoQuiz. Other methods for installation are bellow!
+
 ## Features
 - [x] random flag
 - [x] flags without 2-win-streak
