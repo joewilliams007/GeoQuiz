@@ -7,7 +7,7 @@ This game does not contain any ads or in app purchases, as to not distract from 
 
 Can you get a 100% streak?
 
-## video footage
+## Video footage
 https://youtu.be/div8cfzVpqk
 
 ## About
