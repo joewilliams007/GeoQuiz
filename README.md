@@ -7,12 +7,17 @@ This game does not contain any ads or in app purchases, as to not distract from 
 
 Can you get a 100% streak?
 
+## video footage
+https://youtu.be/div8cfzVpqk
+
 ## About
 Compatible with wear os minsdk 28.
 
 Tested and developed on Samsung watch5.
 
 ## PlayStore
+https://play.google.com/store/apps/details?id=com.dev.geoquizworld
+
 this game is a standalone watch app. To download, please open the PlayStore on your watch and search for GeoQuiz. Other methods for installation are bellow!
 
 ## Features
