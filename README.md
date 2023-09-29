@@ -20,6 +20,8 @@ https://play.google.com/store/apps/details?id=com.dev.geoquizworld
 
 this game is a standalone watch app. To download, please open the PlayStore on your watch and search for GeoQuiz. Other methods for installation are bellow!
 
+Please note: The newest version will always be on GitHub first.
+
 ## Features
 - [x] random flag
 - [x] flags without 2-win-streak
@@ -40,6 +42,8 @@ Or download from here: https://github.com/joewilliams007/GeoQuiz/blob/master/app
 Or build from source
 
 ## Installation (sideloading apk to watch)
+
+If the install fails, please make sure you uninstall the previous install.
 
 ### Easy fire tools (no pc needed)
 
