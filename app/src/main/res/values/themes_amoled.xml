@@ -3,6 +3,7 @@
     <!-- Base application theme. -->
     <style name="Theme.Amoled" parent="Theme.MaterialComponents.DayNight.NoActionBar">
 
+
         <!-- Primary brand color. -->
         <item name="colorPrimary">#000000</item>
         <item name="colorPrimaryVariant">#000000</item>

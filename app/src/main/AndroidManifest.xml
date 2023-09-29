@@ -65,6 +65,7 @@
             android:exported="false" />
         <activity
             android:name=".LocateMapActivity"
+            android:theme="@style/Theme.Block"
             android:exported="false" />
     </application>
 

@@ -12,6 +12,12 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.DisplayMetrics;
 import android.view.Menu;
+import android.view.MotionEvent;
+import android.view.ViewConfiguration;
+
+import androidx.core.view.InputDeviceCompat;
+import androidx.core.view.MotionEventCompat;
+import androidx.core.view.ViewConfigurationCompat;
 
 import com.dev.geoquizworld.animations.Tools;
 
@@ -59,7 +65,7 @@ public class MapActivity extends Activity {
     @SuppressLint("UseCompatLoadingForDrawables")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Tools.setTheme(this);
+        this.setTheme(R.style.Theme_Block);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
 
@@ -123,6 +129,32 @@ public class MapActivity extends Activity {
         } else {
             getAllCountries();
         }
+    }
+
+    @Override
+    public boolean onGenericMotionEvent(MotionEvent event) {
+        if (event.getAction() == MotionEvent.ACTION_SCROLL &&
+                event.isFromSource(InputDeviceCompat.SOURCE_ROTARY_ENCODER)
+        ) {
+            // Don't forget the negation here
+            float delta = -event.getAxisValue(MotionEventCompat.AXIS_SCROLL) *
+                    ViewConfigurationCompat.getScaledVerticalScrollFactor(
+                            ViewConfiguration.get(this), this
+                    );
+
+            if (Math.round(delta)>0) {
+                mMapView.getController().setZoom(mMapView.getZoomLevelDouble()+1);
+            } else {
+                mMapView.getController().setZoom(mMapView.getZoomLevelDouble()-1);
+            }
+
+            //toast(String.valueOf(Math.round(delta)));
+            // Swap these axes to scroll horizontally instead
+            //v.scrollBy(0, Math.round(delta));
+
+            return true;
+        }
+        return super.onGenericMotionEvent(event);
     }
 
     private void getAllCountries() {
