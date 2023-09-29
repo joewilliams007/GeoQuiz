@@ -29,6 +29,8 @@ this game is a standalone watch app. To download, please open the PlayStore on y
 - [x] get extracts and much data already offline for each country
 - [x] view location of country on a map
 - [x] locate game, guess location of country
+- [x] new: zoom in and out with rotating bezel on map (tested on gwatch6 classic)
+- [x] new: back-swipe-action disabled on map
 ## Download
 
 [Click to download apk](https://github.com/joewilliams007/GeoQuiz/blob/master/app/release/app-release.apk?raw=true)
