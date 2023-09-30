@@ -20,6 +20,7 @@ import android.os.VibratorManager;
 import android.provider.BaseColumns;
 import android.widget.Toast;
 
+import androidx.compose.ui.platform.ComposeView;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.wear.activity.ConfirmationActivity;
 import androidx.wear.remote.interactions.RemoteActivityHelper;
@@ -58,6 +59,8 @@ public class MainActivity extends Activity {
         Tools.setTheme(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
 
         wearableRecyclerView = findViewById(R.id.main_menu_view);
         if (Account.isInsertedToDb()) {

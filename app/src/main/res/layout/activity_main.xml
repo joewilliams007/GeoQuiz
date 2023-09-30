@@ -9,6 +9,7 @@
     android:background="?attr/colorSurface"
     tools:deviceIds="wear">
 
+
     <androidx.wear.widget.WearableRecyclerView
         android:id="@+id/main_menu_view"
         android:layout_width="match_parent"

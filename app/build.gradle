@@ -4,7 +4,7 @@ plugins {
 
 android {
     namespace 'com.dev.geoquizworld'
-    compileSdk 33
+    compileSdk 34
 
     defaultConfig {
         applicationId "com.dev.geoquizworld"
@@ -40,6 +40,7 @@ dependencies {
     implementation "com.vanniktech:emoji-ios:0.16.0"
     implementation 'com.github.bumptech.glide:glide:4.14.2'
     implementation platform('androidx.compose:compose-bom:2022.10.00')
+    implementation 'androidx.compose.ui:ui-android:1.5.2'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.14.2'
     implementation "androidx.wear:wear-remote-interactions:1.0.0"
 
