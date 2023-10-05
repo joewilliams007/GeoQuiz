@@ -17,5 +17,24 @@
         <item name="colorSurface">#000000</item>
         <item name="colorSurfaceVariant">#2A2A2A</item>
         <item name="colorOnSurfaceVariant">#000000</item>
+
+        <item name="android:windowBackground">@drawable/splash_background</item>
+    </style>
+
+    <style name="Theme.AmoledPart.Starting" parent="Theme.AmoledPart">
+        <!-- Set the splash screen background to black -->
+        <item name="windowSplashScreenBackground">@android:color/black</item>
+        <!-- Use windowSplashScreenAnimatedIcon to add a drawable or an animated
+             drawable. -->
+        <item name="windowSplashScreenAnimatedIcon">@drawable/splash_background</item>
+        <!-- Set the theme of the Activity that follows your splash screen. -->
+        <item name="postSplashScreenTheme">@drawable/splash_background</item>
+        <!-- Set a white background behind the splash screen icon. -->
+        <item name="windowSplashScreenIconBackgroundColor">@android:color/black</item>
+
+    </style>
+
+    <style name="SplashTheme" parent="Theme.AmoledPart">
+        <item name="android:windowBackground">@drawable/splash_background</item>
     </style>
 </resources>

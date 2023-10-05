@@ -126,6 +126,8 @@ public class LocateMapActivity extends Activity {
                 mMapView.getOverlays().remove(startMarker);
                 GeoPoint startPoint = new GeoPoint(loc.getLatitude(), loc.getLongitude());
                 selectedPoint = true;
+                vibrate();
+                top.setText("submit");
                 startMarker = new Marker(mMapView);
                 startMarker.setPosition(startPoint);
                 startMarker.setTitle("My guess");
@@ -170,7 +172,7 @@ public class LocateMapActivity extends Activity {
     public void submit(View view) {
         vibrate();
         if (!selectedPoint) {
-            toast("select point");
+            finish();
             return;
         }
         if (isSubmit) {

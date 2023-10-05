@@ -10,8 +10,8 @@ android {
         applicationId "com.dev.geoquizworld"
         minSdk 28
         targetSdk 33
-        versionCode 8
-        versionName "1.2.4"
+        versionCode 12
+        versionName "1.2.5"
 
     }
 
@@ -28,6 +28,7 @@ android {
 }
 
 dependencies {
+    implementation "androidx.core:core-splashscreen:1.1.0-alpha02"
 
     implementation 'com.google.android.gms:play-services-wearable:18.0.0'
     implementation 'androidx.percentlayout:percentlayout:1.0.0'

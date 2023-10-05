@@ -1,5 +1,7 @@
 package com.dev.geoquizworld;
 
+import static com.dev.geoquizworld.MainActivity.vibrate;
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
@@ -13,6 +15,7 @@ import android.preference.PreferenceManager;
 import android.util.DisplayMetrics;
 import android.view.Menu;
 import android.view.MotionEvent;
+import android.view.View;
 import android.view.ViewConfiguration;
 
 import androidx.core.view.InputDeviceCompat;
@@ -243,4 +246,9 @@ public class MapActivity extends Activity {
     }
 
     CountryReaderDbHelper dbHelper = new CountryReaderDbHelper(MyApplication.getAppContext());
+
+    public void exit(View view) {
+        vibrate();
+        finish();
+    }
 }
