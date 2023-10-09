@@ -18,6 +18,8 @@ Tested and developed on Samsung watch5.
 ## PlayStore
 https://play.google.com/store/apps/details?id=com.dev.geoquizworld
 
+Please leave a rating if you like the app! Issues can be communicated here on GitHub by opening an issue, or by leaving it in your review!
+
 this game is a standalone watch app. To download, please open the PlayStore on your watch and search for GeoQuiz. Other methods for installation are bellow!
 
 Please note: The newest version will always be on GitHub first.
